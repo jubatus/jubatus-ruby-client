@@ -1,0 +1,22 @@
+--- lib/jubatus/graph/types.rb~	2012-07-19 15:13:16.000000000 +0900
++++ lib/jubatus/graph/types.rb	2012-07-19 17:32:01.000000000 +0900
+@@ -24,6 +24,19 @@
+ 
+ require 'rubygems'
+ require 'msgpack/rpc'
++
++class String
++  def to_tuple
++    self
++  end
++end
++
++class Hash
++  def to_tuple
++    self
++  end
++end
++
+ module Jubatus
+ 
+ class Property
