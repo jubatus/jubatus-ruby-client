@@ -1,17 +1,20 @@
+require 'rubygems'
 require 'bundler'
+require 'rake/testtask'
+require 'ci/reporter/rake/test_unit'
+
 Bundler::GemHelper.install_tasks
 
-require 'rake/testtask'
-
-Rake::TestTask.new(:test) do |test|
-  test.libs << 'lib' << 'test'
-  test.test_files = FileList['test/*.rb']
-  test.verbose = true
-end
-
-task :coverage do |t|
-  ENV['SIMPLE_COV'] = '1'
-  Rake::Task["test"].invoke
+task :test do |test|
+  # We can't test all engines at a time as they share
+  # the same namespace for each config_data.
+  FileList['test/jubatus_test/*/'].each do |engine_dir|
+    Rake::TestTask.new(:test) do |t|
+      t.libs << 'lib' << 'test'
+      t.test_files = FileList[engine_dir + '/*.rb']
+      t.verbose = true
+    end
+  end
 end
 
 task :default => [:build]
