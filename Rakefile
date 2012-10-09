@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'bundler'
+require 'simplecov' # for Ruby 1.9
 require 'rake/testtask'
 require 'ci/reporter/rake/test_unit'
 
@@ -14,6 +15,13 @@ task :test do |test|
       t.test_files = FileList[engine_dir + '/*.rb']
       t.verbose = true
     end
+  end
+end
+
+# for Ruby 1.8
+task :coverage do |coverage|
+  FileList['test/jubatus_test/*/'].each do |engine_dir|
+    system("rcov -o test/coverage -I lib:test  --exclude . --include-file lib/jubatus " + engine_dir + '/*.rb')
   end
 end
 
