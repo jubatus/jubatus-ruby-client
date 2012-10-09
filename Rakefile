@@ -21,7 +21,7 @@ end
 # for Ruby 1.8
 task :coverage do |coverage|
   FileList['test/jubatus_test/*/'].each do |engine_dir|
-    system("rcov -o test/coverage -I lib:test  --exclude . --include-file lib/jubatus " + engine_dir + '/*.rb')
+    system("rcov -o test/coverage -I lib:test  --exclude . --include-file lib/jubatus --aggregate coverage.info " + engine_dir + '/*.rb')
   end
 end
 
