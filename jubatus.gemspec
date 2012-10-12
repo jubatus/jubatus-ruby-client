@@ -14,9 +14,9 @@ Gem::Specification.new do |gem|
   gem.license     = "MIT"
 
   files = `git ls-files`.split("\n")
-  excluds = ["patch/*"]
+  excludes = ["patch/*"]
 
-  gem.files       = files.reject { |f| excluds.any? { |e| File.fnmatch(e, f) } }
+  gem.files       = files.reject { |f| excludes.any? { |e| File.fnmatch(e, f) } }
   gem.test_files  = gem.files.grep(%r{^(test|spec|features)/})
   gem.executables = gem.files.grep(%r{^bin/}).map { |f| File.basename(f) }
   gem.require_paths = ['lib']
