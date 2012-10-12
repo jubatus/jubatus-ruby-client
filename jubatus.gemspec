@@ -11,6 +11,7 @@ Gem::Specification.new do |gem|
   gem.email       = "jubatus@googlegroups.com"
   gem.has_rdoc    = false
   #gem.platform    = Gem::Platform::RUBY
+  gem.license     = "MIT"
 
   files = `git ls-files`.split("\n")
   excluds = ["patch/*"]
