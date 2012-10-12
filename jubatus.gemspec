@@ -3,8 +3,8 @@ $:.push File.expand_path('../lib', __FILE__)
 
 Gem::Specification.new do |gem|
   gem.name        = "jubatus"
-  gem.description = "Jubatus client for Ruby compatible with Jubatus 0.3.1"
-  gem.homepage    = "https://github.com/jubatus/jubatus-ruby-client"
+  gem.description = "Jubatus client for Ruby"
+  gem.homepage    = "http://jubat.us"
   gem.summary     = gem.description
   gem.version     = File.read("VERSION").strip
   gem.authors     = ["Jubatus Team"]
