@@ -11,9 +11,13 @@ Gem::Specification.new do |gem|
   gem.email       = "jubatus@googlegroups.com"
   gem.has_rdoc    = false
   #gem.platform    = Gem::Platform::RUBY
-  gem.files       = `git ls-files`.split("\n")
-  gem.test_files  = `git ls-files -- {test,spec,features}/*`.split("\n")
-  gem.executables = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
+
+  files = `git ls-files`.split("\n")
+  excluds = ["patch/*"]
+
+  gem.files       = files.reject { |f| excluds.any? { |e| File.fnmatch(e, f) } }
+  gem.test_files  = gem.files.grep(%r{^(test|spec|features)/})
+  gem.executables = gem.files.grep(%r{^bin/}).map { |f| File.basename(f) }
   gem.require_paths = ['lib']
 
   gem.add_dependency "msgpack-rpc", "~> 0.4.5"
