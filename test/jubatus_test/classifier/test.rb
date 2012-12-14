@@ -1,10 +1,12 @@
 #!/usr/bin/env ruby
 
 require 'test/unit'
-require 'jubatus_test/test_util'
+
+require 'json'
 
 require 'jubatus/classifier/client'
 require 'jubatus/classifier/types'
+require 'jubatus_test/test_util'
 
 class ClassifierTest < Test::Unit::TestCase
   HOST = "127.0.0.1"
@@ -12,13 +14,23 @@ class ClassifierTest < Test::Unit::TestCase
   TIMEOUT = 10
 
   def setup
-    @srv = TestUtil.fork_process("classifier", PORT)
-    @cli = Jubatus::Client::Classifier.new(HOST, PORT)
-    method = "AROW"
-    @config = "{\n\"string_filter_types\":{}, \n\"string_filter_rules\":[], \n\"num_filter_types\":{}, \n\"num_filter_rules\":[], \n\"string_types\":{}, \n\"string_rules\":\n[{\"key\":\"*\", \"type\":\"str\", \n\"sample_weight\":\"bin\", \"global_weight\":\"bin\"}\n], \n\"num_types\":{}, \n\"num_rules\":[\n{\"key\":\"*\", \"type\":\"num\"}\n]\n}"
-    cd = Jubatus::Config_data.new(method, @config)
-    @cli.set_config("name", cd)
+    @config = {
+        "method" => "AROW",
+        "converter" => {
+            "string_filter_types" => {},
+            "string_filter_rules" => [],
+            "num_filter_types" => {},
+            "num_filter_rules" => [],
+            "string_types" => {},
+            "string_rules" => [{"key" => "*", "type" => "str",  "sample_weight" => "bin", "global_weight" => "bin"}],
+            "num_types" => {},
+            "num_rules" => [{"key" => "*", "type" => "num"}]
+        }
+    }
 
+    TestUtil.write_file("config_classifier.json", config.to_json)
+    @srv = TestUtil.fork_process("classifier", PORT, "config_classifier.json")
+    @cli = Jubatus::Client::Classifier.new(HOST, PORT)
   end
 
   def teardown
@@ -27,8 +39,7 @@ class ClassifierTest < Test::Unit::TestCase
 
   def test_get_config
     config = @cli.get_config("name")
-    assert_equal(config.method, "AROW")
-    assert_equal(config.config, @config)
+    assert_equal(@config.to_json, JSON.parse(config).to_json)
 
   end
 

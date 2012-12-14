@@ -1,10 +1,12 @@
 #!/usr/bin/env ruby
 
 require 'test/unit'
-require 'jubatus_test/test_util'
+
+require 'json'
 
 require 'jubatus/regression/client'
 require 'jubatus/regression/types'
+require 'jubatus_test/test_util'
 
 class RegressionTest < Test::Unit::TestCase
   HOST = "127.0.0.1"
@@ -12,25 +14,32 @@ class RegressionTest < Test::Unit::TestCase
   TIMEOUT = 10
 
   def setup
-    @srv =  TestUtil.fork_process("regression", PORT)
+    @config = {
+        "method" => "PA",
+        "converter" => {
+            "string_filter_types" => {},
+            "string_filter_rules" => [],
+            "num_filter_types" => {},
+            "num_filter_rules" => [],
+            "string_types" => {},
+            "string_rules" => [{"key" => "*", "type" => "str",  "sample_weight" => "bin", "global_weight" => "bin"}],
+            "num_types" => {},
+            "num_rules" => [{"key" => "*", "type" => "num"}]
+        }
+    }
+
+    TestUtil.write_file("config_regression.json", config.to_json)
+    @srv = TestUtil.fork_process("regression", PORT, "config_regression.json")
     @cli = Jubatus::Client::Regression.new(HOST, PORT)
-    method = "PA"
-    @converter = "{\n\"string_filter_types\":{}, \n\"string_filter_rules\":[], \n\"num_filter_types\":{}, \n\"num_filter_rules\":[], \n\"string_types\":{}, \n\"string_rules\":\n[{\"key\":\"*\", \"type\":\"str\", \n\"sample_weight\":\"bin\", \"global_weight\":\"bin\"}\n], \n\"num_types\":{}, \n\"num_rules\":[\n{\"key\":\"*\", \"type\":\"num\"}\n]\n}"
-    cd = Jubatus::Config_data.new(method, @converter)
-    @cli.set_config("name", cd)
-
   end
-
 
   def teardown
     TestUtil.kill_process(@srv)
   end
 
-
   def test_get_config
     config = @cli.get_config("name")
-    assert_equal(config.method, "PA")
-    assert_equal(config.config, @converter)
+    assert_equal(@config.to_json, JSON.parse(config).to_json)
 
   end
 
