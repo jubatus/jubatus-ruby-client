@@ -21,12 +21,12 @@ class TestUtil
         raise "cannot connect"
     end
 
-    def self.fork_process(name, port = 9199)
+    def self.fork_process(name, port = 9199, config = "")
         cmd = "juba" + name
         child = Process.fork()
         if child.nil? then
             begin
-                exec(cmd, cmd, "-p", port.to_s, "-d", ".")
+                exec(cmd, cmd, "--rpc-port", port.to_s, "--config", config, "--thread", "100", "--tmpdir", ".")
             rescue
                 puts $!
                 exit 1
@@ -39,5 +39,11 @@ class TestUtil
     def self.kill_process(pid)
         Process.kill("TERM", pid)
         Process.wait(pid)
+    end
+
+    def self.write_file(path, data)
+        f = File.open(path, "w")
+        f.write(data)
+        f.close
     end
 end
