@@ -41,7 +41,7 @@ class GraphTest < Test::Unit::TestCase
     name = "name"
     @cli.clear(name)
     nid = @cli.create_node(name)
-    assert_equal(@cli.remove_node(name, nid), 0)
+    assert_equal(@cli.remove_node(name, nid), True)
 
   end
 
@@ -51,7 +51,7 @@ class GraphTest < Test::Unit::TestCase
     @cli.clear(name)
     nid = @cli.create_node(name)
     prop = {"key1" => "val1", "key2" => "val2"}
-    assert_equal(@cli.update_node(name, nid, prop), 0)
+    assert_equal(@cli.update_node(name, nid, prop), True)
   end
 
 
