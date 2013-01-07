@@ -18,9 +18,9 @@ class StatTest < Test::Unit::TestCase
         "window_size" => 10
     }
 
-    TestUtil.write_file("config_stat.json", config.to_json)
+    TestUtil.write_file("config_stat.json", @config.to_json)
     @srv = TestUtil.fork_process("stat", PORT, "config_stat.json")
-    @cli = Jubatus::Client::Stat.new(HOST, PORT)
+    @cli = Jubatus::Stat::Client::Stat.new(HOST, PORT)
 
   end
 

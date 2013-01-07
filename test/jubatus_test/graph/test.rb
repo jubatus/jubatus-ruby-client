@@ -3,6 +3,8 @@
 require 'test/unit'
 require 'jubatus_test/test_util'
 
+require 'json'
+
 require 'jubatus/graph/client'
 require 'jubatus/graph/types'
 
@@ -12,8 +14,17 @@ class GraphTest < Test::Unit::TestCase
   TIMEOUT = 10
 
   def setup
-    @srv = TestUtil.fork_process("graph", PORT)
-    @cli = Jubatus::Client::Graph.new(HOST, PORT)
+    @config = {
+      "method" => "graph_wo_index",
+      "parameter" => {
+           "damping_factor" => 0.9,
+           "landmark_num" => 5
+      }
+    }
+
+    TestUtil.write_file("config_graph.json", @config.to_json)
+    @srv = TestUtil.fork_process("graph", PORT, "config_graph.json")
+    @cli = Jubatus::Graph::Client::Graph.new(HOST, PORT)
   end
 
   def teardown
@@ -23,10 +34,10 @@ class GraphTest < Test::Unit::TestCase
   def test_node_info
     edge_query = [["a", "b"], ["c", "d"], ["e", "f"]]
     node_query = [["0", "1"], ["2", "3"]]
-    p = Jubatus::Preset_query.new(edge_query, node_query)
+    p = Jubatus::Graph::Preset_query.new(edge_query, node_query)
     in_edges = [0, 0]
     out_edges = [0, 0]
-    Jubatus::Node_info.new(p, in_edges, out_edges)
+    Jubatus::Graph::Node.new(p, in_edges, out_edges)
   end
 
 
@@ -41,7 +52,7 @@ class GraphTest < Test::Unit::TestCase
     name = "name"
     @cli.clear(name)
     nid = @cli.create_node(name)
-    assert_equal(@cli.remove_node(name, nid), True)
+    assert_equal(@cli.remove_node(name, nid), true)
 
   end
 
@@ -51,7 +62,7 @@ class GraphTest < Test::Unit::TestCase
     @cli.clear(name)
     nid = @cli.create_node(name)
     prop = {"key1" => "val1", "key2" => "val2"}
-    assert_equal(@cli.update_node(name, nid, prop), True)
+    assert_equal(@cli.update_node(name, nid, prop), true)
   end
 
 
@@ -61,7 +72,7 @@ class GraphTest < Test::Unit::TestCase
     src = @cli.create_node(name)
     tgt = @cli.create_node(name)
     prop = {"key1" => "val1", "key2" => "val2"}
-    ei = Jubatus::Edge_info.new(prop, src, tgt)
+    ei = Jubatus::Graph::Edge.new(prop, src, tgt)
     eid = @cli.create_edge("name", tgt, ei)
   end
 
@@ -72,7 +83,7 @@ class GraphTest < Test::Unit::TestCase
     src = @cli.create_node(name)
     tgt = @cli.create_node(name)
     prop = {"key1" => "val1", "key2" => "val2"}
-    ei = Jubatus::Edge_info.new(prop, src, tgt)
+    ei = Jubatus::Graph::Edge.new(prop, src, tgt)
     eid = @cli.create_edge(src, tgt, ei)
   end
 end

@@ -16,6 +16,16 @@ class AnomalyTest < Test::Unit::TestCase
   def setup
     @config = {
      "method" => "lof",
+     "converter" => {
+       "string_filter_types" => {},
+       "string_filter_rules" => [],
+       "num_filter_types" => {},
+       "num_filter_rules" => [],
+       "string_types" => {},
+       "string_rules" => [{"key" => "*", "type" => "str",  "sample_weight" => "bin", "global_weight" => "bin"}],
+       "num_types" => {},
+       "num_rules" => [{"key" => "*", "type" => "num"}]
+     },
      "parameter" => {
        "nearest_neighbor_num" => 10,
        "reverse_nearest_neighbor_num" => 30,
@@ -24,16 +34,16 @@ class AnomalyTest < Test::Unit::TestCase
          "lsh_num" => 8,
          "table_num" => 16,
          "probe_num" => 64,
-         "bin_width" => 10,
+         "bin_width" => 10.0,
          "seed" => 1091,
          "retain_projection" => false
        }
      }
     }
 
-    TestUtil.write_file("config_anomaly.json", config.to_json)
+    TestUtil.write_file("config_anomaly.json", @config.to_json)
     @srv = TestUtil.fork_process("anomaly", PORT, "config_anomaly.json")
-    @cli = Jubatus::Client::anomaly.new(HOST, PORT)
+    @cli = Jubatus::Anomaly::Client::Anomaly.new(HOST, PORT)
   end
 
   def teardown
@@ -41,31 +51,31 @@ class AnomalyTest < Test::Unit::TestCase
   end
 
   def test_clear_row
-    d = Jubatus::Datum.new([], [])
+    d = Jubatus::Anomaly::Datum.new([], [])
     (row_id, score) = @cli.add("name", d)
     assert_equal(true, @cli.clear_row("name", row_id))
   end
 
   def test_add
-    d = Jubatus::Datum.new([], [])
+    d = Jubatus::Anomaly::Datum.new([], [])
     (row_id, score) = @cli.add("name", d)
   end
 
   def test_update
-    d = Jubatus::Datum.new([], [])
+    d = Jubatus::Anomaly::Datum.new([], [])
     (row_id, score) = @cli.add("name", d)
-    d = Jubatus::Datum.new([], [['val', 3.1]])
+    d = Jubatus::Anomaly::Datum.new([], [['val', 3.1]])
     score = @cli.update("name", row_id, d)
   end
 
   def test_clear
-    assert_equal(true, @cli..clear("name"))
+    assert_equal(true, @cli.clear("name"))
   end
 
   def test_calc_score
-    d = Jubatus::Datum.new([], [['val', 1.1]])
+    d = Jubatus::Anomaly::Datum.new([], [['val', 1.1]])
     (row_id, score) = @cli.add("name", d)
-    d = Jubatus::Datum.new([], [['val', 3.1]])
+    d = Jubatus::Anomaly::Datum.new([], [['val', 3.1]])
     score = @cli.calc_score("name", d)
   end
 

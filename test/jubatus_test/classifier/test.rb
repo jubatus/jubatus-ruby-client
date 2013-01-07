@@ -25,12 +25,15 @@ class ClassifierTest < Test::Unit::TestCase
             "string_rules" => [{"key" => "*", "type" => "str",  "sample_weight" => "bin", "global_weight" => "bin"}],
             "num_types" => {},
             "num_rules" => [{"key" => "*", "type" => "num"}]
+        },
+        "parameter" => {
+            "regularization_weight" => 1.001
         }
     }
 
-    TestUtil.write_file("config_classifier.json", config.to_json)
+    TestUtil.write_file("config_classifier.json", @config.to_json)
     @srv = TestUtil.fork_process("classifier", PORT, "config_classifier.json")
-    @cli = Jubatus::Client::Classifier.new(HOST, PORT)
+    @cli = Jubatus::Classifier::Client::Classifier.new(HOST, PORT)
   end
 
   def teardown
@@ -47,7 +50,7 @@ class ClassifierTest < Test::Unit::TestCase
   def test_train
     string_values = [["key1", "val1"], ["key2", "val2"]]
     num_values = [["key1", 1.0], ["key2", 2.0]]
-    d = Jubatus::Datum.new(string_values, num_values)
+    d = Jubatus::Classifier::Datum.new(string_values, num_values)
     data = [["label", d]]
     assert_equal(@cli.train("name", data), 1)
 
@@ -57,7 +60,7 @@ class ClassifierTest < Test::Unit::TestCase
   def test_classify
     string_values = [["key1", "val1"], ["key2", "val2"]]
     num_values = [["key1", 1.0], ["key2", 2.0]]
-    d = Jubatus::Datum.new(string_values, num_values)
+    d = Jubatus::Classifier::Datum.new(string_values, num_values)
     data = [d]
     result = @cli.classify("name", data)
 

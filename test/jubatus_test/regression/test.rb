@@ -25,12 +25,16 @@ class RegressionTest < Test::Unit::TestCase
             "string_rules" => [{"key" => "*", "type" => "str",  "sample_weight" => "bin", "global_weight" => "bin"}],
             "num_types" => {},
             "num_rules" => [{"key" => "*", "type" => "num"}]
+        },
+        "parameter" => {
+            "sensitivity" => 0.1,
+            "regularization_weight" => 3.402823e+38
         }
     }
 
-    TestUtil.write_file("config_regression.json", config.to_json)
+    TestUtil.write_file("config_regression.json", @config.to_json)
     @srv = TestUtil.fork_process("regression", PORT, "config_regression.json")
-    @cli = Jubatus::Client::Regression.new(HOST, PORT)
+    @cli = Jubatus::Regression::Client::Regression.new(HOST, PORT)
   end
 
   def teardown
@@ -47,7 +51,7 @@ class RegressionTest < Test::Unit::TestCase
   def test_train
     string_values = [["key1", "val1"], ["key2", "val2"]]
     num_values = [["key1", 1.0], ["key2", 2.0]]
-    d = Jubatus::Datum.new(string_values, num_values)
+    d = Jubatus::Regression::Datum.new(string_values, num_values)
     data = [[1.0, d]]
     assert_equal(@cli.train("name", data), 1)
 
@@ -57,7 +61,7 @@ class RegressionTest < Test::Unit::TestCase
   def test_estimate
     string_values = [["key1", "val1"], ["key2", "val2"]]
     num_values = [["key1", 1.0], ["key2", 2.0]]
-    d = Jubatus::Datum.new(string_values, num_values)
+    d = Jubatus::Regression::Datum.new(string_values, num_values)
     data = [d]
     result = @cli.estimate("name", data)
 
