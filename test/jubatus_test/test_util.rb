@@ -26,7 +26,7 @@ class TestUtil
         child = Process.fork()
         if child.nil? then
             begin
-                exec(cmd, cmd, "--rpc-port", port.to_s, "--configpath", config, "--thread", "100", "--tmpdir", ".")
+                exec(cmd, cmd, "--rpc-port", port.to_s, "--configpath", config, "--thread", "100", "--datadir", ".")
             rescue
                 puts $!
                 exit 1
