@@ -25,7 +25,7 @@ for IDL in "${JUBATUS_DIR}/src/server"/*.idl; do
 done
 
 for PATCH in "${CLIENT_DIR}/patch"/*.patch; do
-  patch -p0 --directory "${CLIENT_DIR}" < "${PATCH}"
+  patch --no-backup-if-mismatch -p0 --directory "${CLIENT_DIR}" < "${PATCH}"
 done
 
 rm -rf "${JUBATUS_DIR}"
