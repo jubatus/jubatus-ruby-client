@@ -1,10 +1,12 @@
 #!/usr/bin/env ruby
 
 require 'test/unit'
-require 'jubatus_test/test_util'
+
+require 'json'
 
 require 'jubatus/stat/client'
 require 'jubatus/stat/types'
+require 'jubatus_test/test_util'
 
 class StatTest < Test::Unit::TestCase
   HOST = "127.0.0.1"
@@ -12,23 +14,23 @@ class StatTest < Test::Unit::TestCase
   TIMEOUT = 10
 
   def setup
-    @srv = TestUtil.fork_process("stat", PORT)
-    @cli = Jubatus::Client::Stat.new(HOST, PORT)
-    @window_size = 10
-    cd = Jubatus::Config_data.new(@window_size)
-    @cli.set_config("name", cd)
+    @config = {
+        "window_size" => 10
+    }
+
+    TestUtil.write_file("config_stat.json", @config.to_json)
+    @srv = TestUtil.fork_process("stat", PORT, "config_stat.json")
+    @cli = Jubatus::Stat::Client::Stat.new(HOST, PORT)
 
   end
-
 
   def teardown
     TestUtil.kill_process(@srv)
   end
 
-
   def test_get_config
     config = @cli.get_config("name")
-    assert_equal(config.window_size, @window_size)
+    assert_equal(@config.to_json, JSON.parse(config).to_json)
 
   end
 

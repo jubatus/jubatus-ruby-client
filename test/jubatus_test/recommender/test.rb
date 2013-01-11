@@ -1,10 +1,12 @@
 #!/usr/bin/env ruby
 
 require 'test/unit'
-require 'jubatus_test/test_util'
+
+require 'json'
 
 require 'jubatus/recommender/client'
 require 'jubatus/recommender/types'
+require 'jubatus_test/test_util'
 
 class RecommenderTest < Test::Unit::TestCase
   HOST = "127.0.0.1"
@@ -12,12 +14,23 @@ class RecommenderTest < Test::Unit::TestCase
   TIMEOUT = 10
 
   def setup
-    @srv = TestUtil.fork_process("recommender", PORT)
-    @cli = Jubatus::Client::Recommender.new(HOST, PORT)
-    method = "inverted_index"
-    @converter = "{\n\"string_filter_types\":{}, \n\"string_filter_rules\":[], \n\"num_filter_types\":{}, \n\"num_filter_rules\":[], \n\"string_types\":{}, \n\"string_rules\":\n[{\"key\":\"*\", \"type\":\"str\", \n\"sample_weight\":\"bin\", \"global_weight\":\"bin\"}\n], \n\"num_types\":{}, \n\"num_rules\":[\n{\"key\":\"*\", \"type\":\"num\"}\n]\n}"
-    cd = Jubatus::Config_data.new(method, @converter)
-    @cli.set_config("name", cd)
+    @config = {
+        "method" => "inverted_index",
+        "converter" => {
+            "string_filter_types" => {},
+            "string_filter_rules" => [],
+            "num_filter_types" => {},
+            "num_filter_rules" => [],
+            "string_types" => {},
+            "string_rules" => [{"key" => "*", "type" => "str",  "sample_weight" => "bin", "global_weight" => "bin"}],
+            "num_types" => {},
+            "num_rules" => [{"key" => "*", "type" => "num"}]
+        }
+    }
+
+    TestUtil.write_file("config_recommender.json", @config.to_json)
+    @srv = TestUtil.fork_process("recommender", PORT, "config_recommender.json")
+    @cli = Jubatus::Recommender::Client::Recommender.new(HOST, PORT)
   end
 
   def teardown
@@ -26,8 +39,8 @@ class RecommenderTest < Test::Unit::TestCase
 
   def test_get_config
     config = @cli.get_config("name")
-    assert_equal(config.method, "inverted_index")
-    assert_equal(config.converter, @converter)
+    assert_equal(@config.to_json, JSON.parse(config).to_json)
+
   end
 
 
@@ -35,22 +48,22 @@ class RecommenderTest < Test::Unit::TestCase
     @cli.clear_row("name", "complete_row")
     string_values = [["key1", "val1"], ["key2", "val2"]]
     num_values = [["key1", 1.0], ["key2", 2.0]]
-    d = Jubatus::Datum.new(string_values, num_values)
+    d = Jubatus::Recommender::Datum.new(string_values, num_values)
     @cli.update_row("name", "complete_row", d)
     d1 = @cli.complete_row_from_id("name", "complete_row")
-    d2 = @cli.complete_row_from_data("name", d)
+    d2 = @cli.complete_row_from_datum("name", d)
 
   end
 
 
-  def test_similar_row
+  def test_get_similar_row
     @cli.clear_row("name", "similar_row")
     string_values = [["key1", "val1"], ["key2", "val2"]]
     num_values = [["key1", 1.0], ["key2", 2.0]]
-    d = Jubatus::Datum.new(string_values, num_values)
+    d = Jubatus::Recommender::Datum.new(string_values, num_values)
     @cli.update_row("name", "similar_row", d)
     s1 = @cli.similar_row_from_id("name", "similar_row", 10)
-    s2 = @cli.similar_row_from_data("name", d, 10)
+    s2 = @cli.similar_row_from_datum("name", d, 10)
 
   end
 
@@ -59,7 +72,7 @@ class RecommenderTest < Test::Unit::TestCase
     @cli.clear_row("name", "decode_row")
     string_values = [["key1", "val1"], ["key2", "val2"]]
     num_values = [["key1", 1.0], ["key2", 2.0]]
-    d = Jubatus::Datum.new(string_values, num_values)
+    d = Jubatus::Recommender::Datum.new(string_values, num_values)
     @cli.update_row("name", "decode_row", d)
     decoded_row = @cli.decode_row("name", "decode_row")
     assert_equal(d.string_values, decoded_row.string_values)
@@ -71,7 +84,7 @@ class RecommenderTest < Test::Unit::TestCase
     @cli.clear("name")
     string_values = [["key1", "val1"], ["key2", "val2"]]
     num_values = [["key1", 1.0], ["key2", 2.0]]
-    d = Jubatus::Datum.new(string_values, num_values)
+    d = Jubatus::Recommender::Datum.new(string_values, num_values)
     @cli.update_row("name", "get_row", d)
     row_names = @cli.get_all_rows("name")
     assert_equal(row_names, ["get_row"])
@@ -88,9 +101,9 @@ class RecommenderTest < Test::Unit::TestCase
   def test_calcs
     string_values = [["key1", "val1"], ["key2", "val2"]]
     num_values = [["key1", 1.0], ["key2", 2.0]]
-    d = Jubatus::Datum.new(string_values, num_values)
-    assert_in_delta(@cli.similarity("name", d, d), 1, 0.000001)
-    assert_in_delta(@cli.l2norm("name", d), Math.sqrt(1*1 + 1*1+ 1*1 + 2*2), 0.000001)
+    d = Jubatus::Recommender::Datum.new(string_values, num_values)
+    assert_in_delta(@cli.calc_similarity("name", d, d), 1, 0.000001)
+    assert_in_delta(@cli.calc_l2norm("name", d), Math.sqrt(1*1 + 1*1+ 1*1 + 2*2), 0.000001)
 
   end
 
