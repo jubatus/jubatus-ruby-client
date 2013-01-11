@@ -13,7 +13,7 @@ Gem::Specification.new do |gem|
   gem.license     = "MIT"
 
   files = `git ls-files`.split("\n")
-  excludes = ["patch/*"]
+  excludes = ["patch/*", "generate.sh"]
 
   gem.files       = files.reject { |f| excludes.any? { |e| File.fnmatch(e, f) } }
   gem.test_files  = gem.files.grep(%r{^(test|spec|features)/})
