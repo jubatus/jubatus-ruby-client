@@ -2,7 +2,7 @@
 
 JUBATUS_DIR="jubatus-generate"
 JUBATUS_BRANCH="master"
-CLIENT_DIR="$(dirname "${0}")"
+CLIENT_DIR="$(cd $(dirname ${0}) && echo ${PWD})"
 
 [ $# -eq 0 ] || JUBATUS_BRANCH="${1}"
 
@@ -19,10 +19,12 @@ capitalize() {
 }
 
 rm -rf "${CLIENT_DIR}/lib"
-for IDL in "${JUBATUS_DIR}/src/server"/*.idl; do
+pushd "${JUBATUS_DIR}/src/server"
+for IDL in *.idl; do
   NAMESPACE="$(capitalize $(basename "${IDL}" ".idl"))"
   mpidl ruby "${IDL}" -m "Jubatus::${NAMESPACE}" -o "${CLIENT_DIR}/lib/jubatus"
 done
+popd
 
 for PATCH in "${CLIENT_DIR}/patch"/*.patch; do
   patch --no-backup-if-mismatch -p0 --directory "${CLIENT_DIR}" < "${PATCH}"
