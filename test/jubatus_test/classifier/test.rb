@@ -42,7 +42,7 @@ class ClassifierTest < Test::Unit::TestCase
 
   def test_get_config
     config = @cli.get_config("name")
-    assert_equal(@config.to_json, JSON.parse(config).to_json)
+    assert_equal(JSON.parse(config), @config)
 
   end
 

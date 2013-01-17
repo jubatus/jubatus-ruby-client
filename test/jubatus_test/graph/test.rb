@@ -86,5 +86,11 @@ class GraphTest < Test::Unit::TestCase
     ei = Jubatus::Graph::Edge.new(prop, src, tgt)
     eid = @cli.create_edge(src, tgt, ei)
   end
+
+  def test_get_config
+    config = @cli.get_config("name")
+    assert_equal(JSON.parse(config), @config)
+  end
+
 end
 
