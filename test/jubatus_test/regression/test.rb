@@ -41,12 +41,14 @@ class RegressionTest < Test::Unit::TestCase
     TestUtil.kill_process(@srv)
   end
 
+  def test_get_client
+    assert_instance_of( MessagePack::RPC::Client, @cli.get_client )
+  end
+
   def test_get_config
     config = @cli.get_config("name")
     assert_equal(JSON.parse(config), @config)
-
   end
-
 
   def test_train
     string_values = [["key1", "val1"], ["key2", "val2"]]
@@ -54,9 +56,7 @@ class RegressionTest < Test::Unit::TestCase
     d = Jubatus::Regression::Datum.new(string_values, num_values)
     data = [[1.0, d]]
     assert_equal(@cli.train("name", data), 1)
-
   end
-
 
   def test_estimate
     string_values = [["key1", "val1"], ["key2", "val2"]]
@@ -64,29 +64,21 @@ class RegressionTest < Test::Unit::TestCase
     d = Jubatus::Regression::Datum.new(string_values, num_values)
     data = [d]
     result = @cli.estimate("name", data)
-
   end
-
 
   def test_save
     assert_equal(@cli.save("name", "regression.save_test.model"), true)
-
   end
-
 
   def test_load
     model_name = "regression.load_test.model"
     @cli.save("name", model_name)
     assert_equal(@cli.load("name", model_name), true)
-
   end
-
 
   def test_get_status
     @cli.get_status("name")
-
   end
-
 
 end
 

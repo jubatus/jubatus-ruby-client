@@ -31,6 +31,10 @@ class GraphTest < Test::Unit::TestCase
     TestUtil.kill_process(@srv)
   end
 
+  def test_get_client
+    assert_instance_of( MessagePack::RPC::Client, @cli.get_client )
+  end
+
   def test_node_info
     edge_query = [["a", "b"], ["c", "d"], ["e", "f"]]
     node_query = [["0", "1"], ["2", "3"]]
@@ -39,7 +43,6 @@ class GraphTest < Test::Unit::TestCase
     out_edges = [0, 0]
     Jubatus::Graph::Node.new(p, in_edges, out_edges)
   end
-
 
   def test_create_node
     name = "name"
@@ -53,9 +56,7 @@ class GraphTest < Test::Unit::TestCase
     @cli.clear(name)
     nid = @cli.create_node(name)
     assert_equal(@cli.remove_node(name, nid), true)
-
   end
-
 
   def test_update_node
     name = "name"
@@ -64,7 +65,6 @@ class GraphTest < Test::Unit::TestCase
     prop = {"key1" => "val1", "key2" => "val2"}
     assert_equal(@cli.update_node(name, nid, prop), true)
   end
-
 
   def test_create_edge
     name = "name"
@@ -75,7 +75,6 @@ class GraphTest < Test::Unit::TestCase
     ei = Jubatus::Graph::Edge.new(prop, src, tgt)
     eid = @cli.create_edge("name", tgt, ei)
   end
-
 
   def test_create_edge
     name = "name"

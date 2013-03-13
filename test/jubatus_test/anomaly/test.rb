@@ -50,6 +50,10 @@ class AnomalyTest < Test::Unit::TestCase
     TestUtil.kill_process(@srv)
   end
 
+  def test_get_client
+    assert_instance_of( MessagePack::RPC::Client, @cli.get_client )
+  end
+
   def test_clear_row
     d = Jubatus::Anomaly::Datum.new([], [])
     (row_id, score) = @cli.add("name", d)
@@ -91,7 +95,6 @@ class AnomalyTest < Test::Unit::TestCase
   def test_save
     assert_equal(true, @cli.save("name", "anomaly.save_test.model"))
   end
-
 
   def test_load
     model_name = "anomaly.load_test.model"
