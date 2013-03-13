@@ -1,5 +1,5 @@
---- lib/jubatus/graph/types.rb~	2013-03-08 17:39:35.785042614 +0900
-+++ lib/jubatus/graph/types.rb	2013-03-08 17:38:44.429042540 +0900
+--- origin/lib/jubatus/graph/types.rb	2013-03-08 17:39:35.785042614 +0900
++++ for_jubatus/lib/jubatus/graph/types.rb	2013-03-08 17:38:44.429042540 +0900
 @@ -3,6 +3,19 @@
  
  require 'rubygems'
