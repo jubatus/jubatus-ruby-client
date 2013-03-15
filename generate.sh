@@ -26,8 +26,10 @@ for IDL in *.idl; do
 done
 popd
 
-for PATCH in "${CLIENT_DIR}/patch"/*.patch; do
-  patch --no-backup-if-mismatch -p0 --directory "${CLIENT_DIR}" < "${PATCH}"
+pushd "${CLIENT_DIR}"
+for PATCH in $(find "${CLIENT_DIR}/patch" -maxdepth 1 -name "*.patch"); do
+  patch --no-backup-if-mismatch -p1 < "${PATCH}"
 done
+popd
 
 rm -rf "${JUBATUS_DIR}"

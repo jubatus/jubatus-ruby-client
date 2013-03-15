@@ -28,12 +28,14 @@ class StatTest < Test::Unit::TestCase
     TestUtil.kill_process(@srv)
   end
 
+  def test_get_client
+    assert_instance_of( MessagePack::RPC::Client, @cli.get_client )
+  end
+
   def test_get_config
     config = @cli.get_config("name")
     assert_equal(JSON.parse(config), @config)
-
   end
-
 
   def test_stddev
     @cli.push("name", "stddev", 1.0)
@@ -42,9 +44,7 @@ class StatTest < Test::Unit::TestCase
     @cli.push("name", "stddev", 4.0)
     @cli.push("name", "stddev", 5.0)
     assert_equal(@cli.stddev("name", "stddev"), Math::sqrt(2.0))
-
   end
-
 
   def test_sum
     @cli.push("name", "sum", 1.0)
@@ -53,9 +53,7 @@ class StatTest < Test::Unit::TestCase
     @cli.push("name", "sum", 4.0)
     @cli.push("name", "sum", 5.0)
     assert_equal(@cli.sum("name", "sum"), 15.0)
-
   end
-
 
   def test_max
     @cli.push("name", "max", 1.0)
@@ -64,9 +62,7 @@ class StatTest < Test::Unit::TestCase
     @cli.push("name", "max", 4.0)
     @cli.push("name", "max", 5.0)
     assert_equal(@cli.max("name", "max"), 5.0)
-
   end
-
 
   def test_min
     @cli.push("name", "min", 1.0)
@@ -75,9 +71,7 @@ class StatTest < Test::Unit::TestCase
     @cli.push("name", "min", 4.0)
     @cli.push("name", "min", 5.0)
     assert_equal(@cli.min("name", "min"), 1.0)
-
   end
-
 
   def test_entropy
     @cli.push("name", "entropy", 1.0)
@@ -86,9 +80,7 @@ class StatTest < Test::Unit::TestCase
     @cli.push("name", "entropy", 4.0)
     @cli.push("name", "entropy", 5.0)
     assert_equal(@cli.entropy("name", "entropy"), 0.0)
-
   end
-
 
   def test_moment
     @cli.push("name", "moment", 1.0)
@@ -97,29 +89,21 @@ class StatTest < Test::Unit::TestCase
     @cli.push("name", "moment", 4.0)
     @cli.push("name", "moment", 5.0)
     assert_equal(@cli.moment("name", "moment", 3, 0.0), 45.0)
-
   end
-
 
   def test_save
     assert_equal(@cli.save("name", "stat.save_test.model"), true)
-
   end
-
 
   def test_load
     model_name = "stat.load_test.model"
     @cli.save("name", model_name)
     assert_equal(@cli.load("name", model_name), true)
-
   end
-
 
   def test_get_status
     @cli.get_status("name")
-
   end
-
 
 end
 

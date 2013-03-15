@@ -40,12 +40,14 @@ class ClassifierTest < Test::Unit::TestCase
     TestUtil.kill_process(@srv)
   end
 
+  def test_get_client
+    assert_instance_of( MessagePack::RPC::Client, @cli.get_client )
+  end
+
   def test_get_config
     config = @cli.get_config("name")
     assert_equal(JSON.parse(config), @config)
-
   end
-
 
   def test_train
     string_values = [["key1", "val1"], ["key2", "val2"]]
@@ -53,9 +55,7 @@ class ClassifierTest < Test::Unit::TestCase
     d = Jubatus::Classifier::Datum.new(string_values, num_values)
     data = [["label", d]]
     assert_equal(@cli.train("name", data), 1)
-
   end
-
 
   def test_classify
     string_values = [["key1", "val1"], ["key2", "val2"]]
@@ -63,29 +63,20 @@ class ClassifierTest < Test::Unit::TestCase
     d = Jubatus::Classifier::Datum.new(string_values, num_values)
     data = [d]
     result = @cli.classify("name", data)
-
   end
-
 
   def test_save
     assert_equal(@cli.save("name", "classifier.save_test.model"), true)
-
   end
-
 
   def test_load
     model_name = "classifier.load_test.model"
     @cli.save("name", model_name)
     assert_equal(@cli.load("name", model_name), true)
-
   end
-
 
   def test_get_status
     @cli.get_status("name")
-
   end
 
-
 end
-

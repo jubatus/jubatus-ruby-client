@@ -1,6 +1,6 @@
---- lib/jubatus/graph/types.rb~	2012-07-19 15:13:16.000000000 +0900
-+++ lib/jubatus/graph/types.rb	2012-07-19 17:32:01.000000000 +0900
-@@ -24,6 +24,19 @@
+--- origin/lib/jubatus/graph/types.rb	2013-03-08 17:39:35.785042614 +0900
++++ for_jubatus/lib/jubatus/graph/types.rb	2013-03-08 17:38:44.429042540 +0900
+@@ -3,6 +3,19 @@
  
  require 'rubygems'
  require 'msgpack/rpc'
@@ -18,5 +18,5 @@
 +end
 +
  module Jubatus
+ module Graph
  
- class Property
