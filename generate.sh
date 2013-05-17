@@ -19,7 +19,7 @@ capitalize() {
 }
 
 rm -rf "${CLIENT_DIR}/lib"
-pushd "${JUBATUS_DIR}/src/server"
+pushd "${JUBATUS_DIR}/jubatus/server/server"
 for IDL in *.idl; do
   NAMESPACE="$(capitalize $(basename "${IDL}" ".idl"))"
   mpidl ruby "${IDL}" -m "Jubatus::${NAMESPACE}" -o "${CLIENT_DIR}/lib/jubatus"
