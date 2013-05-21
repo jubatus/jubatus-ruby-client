@@ -22,13 +22,7 @@ rm -rf "${CLIENT_DIR}/lib"
 pushd "${JUBATUS_DIR}/jubatus/server/server"
 for IDL in *.idl; do
   NAMESPACE="$(capitalize $(basename "${IDL}" ".idl"))"
-  mpidl ruby "${IDL}" -m "Jubatus::${NAMESPACE}" -o "${CLIENT_DIR}/lib/jubatus"
-done
-popd
-
-pushd "${CLIENT_DIR}"
-for PATCH in $(find "${CLIENT_DIR}/patch" -maxdepth 1 -name "*.patch"); do
-  patch --no-backup-if-mismatch -p1 < "${PATCH}"
+  jenerator -l ruby "${IDL}" -n "Jubatus::${NAMESPACE}" -o "${CLIENT_DIR}/lib/jubatus"
 done
 popd
 
