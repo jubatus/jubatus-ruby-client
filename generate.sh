@@ -18,7 +18,7 @@ capitalize() {
   echo "$(echo ${1:0:1} | tr 'a-z' 'A-Z')${1:1}"
 }
 
-for DIR in "${CLIENT_DIR}/lib/jubatus"*; do
+for DIR in "${CLIENT_DIR}/lib/jubatus/"*; do
   if [ "$(basename "${DIR}")" != "common" ]; then
     rm -rf $DIR
   fi
