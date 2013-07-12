@@ -1,4 +1,5 @@
-lib/
+lib/jubatus/*
+!lib/jubatus/common
 *.gem
 *.rbc
 .bundle
