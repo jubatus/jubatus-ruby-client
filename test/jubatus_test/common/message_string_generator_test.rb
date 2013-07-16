@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'test/unit'
-require 'jubatus/common/message_string_generator'
+require 'jubatus/common'
 
 module Jubatus
 module Common
