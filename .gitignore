@@ -16,6 +16,7 @@ test/version_tmp
 tmp
 *.model.js
 *.json
+*~
 
 # YARD artifacts
 .yardoc
