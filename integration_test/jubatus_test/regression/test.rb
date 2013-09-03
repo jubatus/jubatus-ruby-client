@@ -53,7 +53,7 @@ class RegressionTest < Test::Unit::TestCase
   def test_train
     string_values = [["key1", "val1"], ["key2", "val2"]]
     num_values = [["key1", 1.0], ["key2", 2.0]]
-    d = Jubatus::Regression::Datum.new(string_values, num_values)
+    d = Jubatus::Common::Datum.new(string_values, num_values)
     data = [[1.0, d]]
     assert_equal(@cli.train("name", data), 1)
   end
@@ -61,7 +61,7 @@ class RegressionTest < Test::Unit::TestCase
   def test_estimate
     string_values = [["key1", "val1"], ["key2", "val2"]]
     num_values = [["key1", 1.0], ["key2", 2.0]]
-    d = Jubatus::Regression::Datum.new(string_values, num_values)
+    d = Jubatus::Common::Datum.new(string_values, num_values)
     data = [d]
     result = @cli.estimate("name", data)
   end

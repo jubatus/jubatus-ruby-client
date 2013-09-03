@@ -52,7 +52,7 @@ class ClassifierTest < Test::Unit::TestCase
   def test_train
     string_values = [["key1", "val1"], ["key2", "val2"]]
     num_values = [["key1", 1.0], ["key2", 2.0]]
-    d = Jubatus::Classifier::Datum.new(string_values, num_values)
+    d = Jubatus::Common::Datum.new(string_values, num_values)
     data = [["label", d]]
     assert_equal(@cli.train("name", data), 1)
   end
@@ -60,7 +60,7 @@ class ClassifierTest < Test::Unit::TestCase
   def test_classify
     string_values = [["key1", "val1"], ["key2", "val2"]]
     num_values = [["key1", 1.0], ["key2", 2.0]]
-    d = Jubatus::Classifier::Datum.new(string_values, num_values)
+    d = Jubatus::Common::Datum.new(string_values, num_values)
     data = [d]
     result = @cli.classify("name", data)
   end
