@@ -19,7 +19,7 @@ capitalize() {
 }
 
 for DIR in "${CLIENT_DIR}/lib/jubatus/"*; do
-  if [ "$(basename "${DIR}")" != "common" ]; then
+  if [ -d "${DIR}" ] && [ "$(basename "${DIR}")" != "common" ]; then
     rm -rf $DIR
   fi
 done

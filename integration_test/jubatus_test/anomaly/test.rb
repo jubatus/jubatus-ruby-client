@@ -55,20 +55,20 @@ class AnomalyTest < Test::Unit::TestCase
   end
 
   def test_clear_row
-    d = Jubatus::Anomaly::Datum.new([], [])
+    d = Jubatus::Common::Datum.new([], [])
     (row_id, score) = @cli.add("name", d)
     assert_equal(true, @cli.clear_row("name", row_id))
   end
 
   def test_add
-    d = Jubatus::Anomaly::Datum.new([], [])
+    d = Jubatus::Common::Datum.new([], [])
     (row_id, score) = @cli.add("name", d)
   end
 
   def test_update
-    d = Jubatus::Anomaly::Datum.new([], [])
+    d = Jubatus::Common::Datum.new([], [])
     (row_id, score) = @cli.add("name", d)
-    d = Jubatus::Anomaly::Datum.new([], [['val', 3.1]])
+    d = Jubatus::Common::Datum.new([], [['val', 3.1]])
     score = @cli.update("name", row_id, d)
   end
 
@@ -77,9 +77,9 @@ class AnomalyTest < Test::Unit::TestCase
   end
 
   def test_calc_score
-    d = Jubatus::Anomaly::Datum.new([], [['val', 1.1]])
+    d = Jubatus::Common::Datum.new([], [['val', 1.1]])
     (row_id, score) = @cli.add("name", d)
-    d = Jubatus::Anomaly::Datum.new([], [['val', 3.1]])
+    d = Jubatus::Common::Datum.new([], [['val', 3.1]])
     score = @cli.calc_score("name", d)
   end
 
