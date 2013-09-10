@@ -33,7 +33,7 @@ class ClassifierTest < Test::Unit::TestCase
 
     TestUtil.write_file("config_classifier.json", @config.to_json)
     @srv = TestUtil.fork_process("classifier", PORT, "config_classifier.json")
-    @cli = Jubatus::Classifier::Client::Classifier.new(HOST, PORT)
+    @cli = Jubatus::Classifier::Client::Classifier.new(HOST, PORT, "name")
   end
 
   def teardown
@@ -45,7 +45,7 @@ class ClassifierTest < Test::Unit::TestCase
   end
 
   def test_get_config
-    config = @cli.get_config("name")
+    config = @cli.get_config
     assert_equal(JSON.parse(config), @config)
   end
 
@@ -54,7 +54,7 @@ class ClassifierTest < Test::Unit::TestCase
     num_values = [["key1", 1.0], ["key2", 2.0]]
     d = Jubatus::Common::Datum.new(string_values, num_values)
     data = [["label", d]]
-    assert_equal(@cli.train("name", data), 1)
+    assert_equal(@cli.train(data), 1)
   end
 
   def test_classify
@@ -62,21 +62,21 @@ class ClassifierTest < Test::Unit::TestCase
     num_values = [["key1", 1.0], ["key2", 2.0]]
     d = Jubatus::Common::Datum.new(string_values, num_values)
     data = [d]
-    result = @cli.classify("name", data)
+    result = @cli.classify(data)
   end
 
   def test_save
-    assert_equal(@cli.save("name", "classifier.save_test.model"), true)
+    assert_equal(@cli.save("classifier.save_test.model"), true)
   end
 
   def test_load
     model_name = "classifier.load_test.model"
-    @cli.save("name", model_name)
-    assert_equal(@cli.load("name", model_name), true)
+    @cli.save(model_name)
+    assert_equal(@cli.load(model_name), true)
   end
 
   def test_get_status
-    @cli.get_status("name")
+    @cli.get_status
   end
 
 end

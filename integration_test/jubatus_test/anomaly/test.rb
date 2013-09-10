@@ -43,7 +43,7 @@ class AnomalyTest < Test::Unit::TestCase
 
     TestUtil.write_file("config_anomaly.json", @config.to_json)
     @srv = TestUtil.fork_process("anomaly", PORT, "config_anomaly.json")
-    @cli = Jubatus::Anomaly::Client::Anomaly.new(HOST, PORT)
+    @cli = Jubatus::Anomaly::Client::Anomaly.new(HOST, PORT, "name")
   end
 
   def teardown
@@ -56,54 +56,54 @@ class AnomalyTest < Test::Unit::TestCase
 
   def test_clear_row
     d = Jubatus::Common::Datum.new([], [])
-    (row_id, score) = @cli.add("name", d)
-    assert_equal(true, @cli.clear_row("name", row_id))
+    res = @cli.add(d)
+    assert_equal(true, @cli.clear_row(res.id))
   end
 
   def test_add
     d = Jubatus::Common::Datum.new([], [])
-    (row_id, score) = @cli.add("name", d)
+    res = @cli.add(d)
   end
 
   def test_update
     d = Jubatus::Common::Datum.new([], [])
-    (row_id, score) = @cli.add("name", d)
+    res = @cli.add(d)
     d = Jubatus::Common::Datum.new([], [['val', 3.1]])
-    score = @cli.update("name", row_id, d)
+    score = @cli.update(res.id, d)
   end
 
   def test_clear
-    assert_equal(true, @cli.clear("name"))
+    assert_equal(true, @cli.clear)
   end
 
   def test_calc_score
     d = Jubatus::Common::Datum.new([], [['val', 1.1]])
-    (row_id, score) = @cli.add("name", d)
+    res = @cli.add(d)
     d = Jubatus::Common::Datum.new([], [['val', 3.1]])
-    score = @cli.calc_score("name", d)
+    score = @cli.calc_score(d)
   end
 
   def test_get_all_rows
-    @cli.get_all_rows("name")
+    @cli.get_all_rows
   end
 
   def test_get_config
-    config = @cli.get_config("name")
+    config = @cli.get_config
     assert_equal(JSON.parse(config), @config)
   end
 
   def test_save
-    assert_equal(true, @cli.save("name", "anomaly.save_test.model"))
+    assert_equal(true, @cli.save("anomaly.save_test.model"))
   end
 
   def test_load
     model_name = "anomaly.load_test.model"
-    @cli.save("name", model_name)
-    assert_equal(true, @cli.load("name", model_name))
+    @cli.save(model_name)
+    assert_equal(true, @cli.load(model_name))
   end
 
   def test_get_status
-    @cli.get_status("name")
+    @cli.get_status
   end
 
 end

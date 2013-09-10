@@ -80,6 +80,17 @@ class TString < TPrimitive
   end
 end
 
+class TDatum
+  def from_msgpack(m)
+    Jubatus::Common::Datum.from_msgpack(m)
+  end
+
+  def to_msgpack(m)
+    Jubatus::Common.check_type(m, Jubatus::Common::Datum)
+    m.to_msgpack()
+  end
+end
+
 class TRaw < TPrimitive
   def initialize()
     super([String])
@@ -140,7 +151,7 @@ class TMap
   end
 
   def to_msgpack(m)
-    Jubatus::Common.check_type(m, dict)
+    Jubatus::Common.check_type(m, Hash)
     dic = {}
     m.each do |k, v|
       dic[@key.to_msgpack(k)] = @value.to_msgpack(v)
@@ -190,8 +201,13 @@ class TUserDef
   end
 
   def to_msgpack(m)
-    Jubatus::Common.check_type(m, @type)
-    return m.to_msgpack()
+    if @type === m
+      return m.to_msgpack()
+    elsif Array === m
+      return @type::TYPE.to_msgpack(m)
+    else
+      raise TypeError, "type %s or Array are expected, but %s is given" % [@type, m.class]
+    end
   end
 end
 

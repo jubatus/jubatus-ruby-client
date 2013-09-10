@@ -24,7 +24,7 @@ class GraphTest < Test::Unit::TestCase
 
     TestUtil.write_file("config_graph.json", @config.to_json)
     @srv = TestUtil.fork_process("graph", PORT, "config_graph.json")
-    @cli = Jubatus::Graph::Client::Graph.new(HOST, PORT)
+    @cli = Jubatus::Graph::Client::Graph.new(HOST, PORT, "name")
   end
 
   def teardown
@@ -45,49 +45,35 @@ class GraphTest < Test::Unit::TestCase
   end
 
   def test_create_node
-    name = "name"
-    @cli.clear(name)
-    nid = @cli.create_node("sample_node")
+    @cli.clear
+    nid = @cli.create_node
     assert_equal(nid.to_i.to_s, nid)
   end
 
   def test_remove_node
-    name = "name"
-    @cli.clear(name)
-    nid = @cli.create_node(name)
-    assert_equal(@cli.remove_node(name, nid), true)
+    @cli.clear
+    nid = @cli.create_node
+    assert_equal(@cli.remove_node(nid), true)
   end
 
   def test_update_node
-    name = "name"
-    @cli.clear(name)
-    nid = @cli.create_node(name)
+    @cli.clear
+    nid = @cli.create_node
     prop = {"key1" => "val1", "key2" => "val2"}
-    assert_equal(@cli.update_node(name, nid, prop), true)
+    assert_equal(@cli.update_node(nid, prop), true)
   end
 
   def test_create_edge
-    name = "name"
-    @cli.clear(name)
-    src = @cli.create_node(name)
-    tgt = @cli.create_node(name)
+    @cli.clear
+    src = @cli.create_node
+    tgt = @cli.create_node
     prop = {"key1" => "val1", "key2" => "val2"}
     ei = Jubatus::Graph::Edge.new(prop, src, tgt)
-    eid = @cli.create_edge("name", tgt, ei)
-  end
-
-  def test_create_edge
-    name = "name"
-    @cli.clear(name)
-    src = @cli.create_node(name)
-    tgt = @cli.create_node(name)
-    prop = {"key1" => "val1", "key2" => "val2"}
-    ei = Jubatus::Graph::Edge.new(prop, src, tgt)
-    eid = @cli.create_edge(src, tgt, ei)
+    eid = @cli.create_edge(tgt, ei)
   end
 
   def test_get_config
-    config = @cli.get_config("name")
+    config = @cli.get_config
     assert_equal(JSON.parse(config), @config)
   end
 
