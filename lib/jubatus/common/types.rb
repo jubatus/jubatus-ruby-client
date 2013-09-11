@@ -35,12 +35,12 @@ class TPrimitive
 end
 
 class TInt < TPrimitive
-  def initialize(signed, bits)
+  def initialize(signed, byts)
     if signed
-      @max = (1 << (bits - 1)) - 1
-      @min = - (1 << (bits - 1))
+      @max = (1 << (8 * byts - 1)) - 1
+      @min = - (1 << (8 * byts - 1))
     else
-      @max = (1 << bits) - 1
+      @max = (1 << (8 * byts)) - 1
       @min = 0
     end
   end
@@ -48,7 +48,7 @@ class TInt < TPrimitive
   def from_msgpack(m)
     Jubatus::Common.check_type(m, Integer)
     if not (@min <= m and m <= @max)
-      raise ValueError
+      raise ValueError, "int value must be in (%d, %d), but %d is given" % [@min, @max, m]
     end
     return m
   end
@@ -56,7 +56,7 @@ class TInt < TPrimitive
   def to_msgpack(m)
     Jubatus::Common.check_type(m, Integer)
     if not (@min <= m and m <= @max)
-      raise ValueError
+      raise ValueError, "int value must be in (%d, %d), but %d is given" % [@min, @max, m]
     end
     return m
   end

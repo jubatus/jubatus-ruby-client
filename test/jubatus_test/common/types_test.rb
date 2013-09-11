@@ -24,13 +24,13 @@ class TypeCheckTest < Test::Unit::TestCase
   end
     
   def testInt()
-    assertTypeOf(TInt.new(true, 8), 1)
-    assertTypeError(TInt.new(true, 8), nil)
-    assertTypeError(TInt.new(true, 8), "")
-    assertValueError(TInt.new(true, 8), 128)
-    assertValueError(TInt.new(true, 8), -129)
-    assertValueError(TInt.new(false, 8), 256)
-    assertValueError(TInt.new(false, 8), -1)
+    assertTypeOf(TInt.new(true, 1), 1)
+    assertTypeError(TInt.new(true, 1), nil)
+    assertTypeError(TInt.new(true, 1), "")
+    assertValueError(TInt.new(true, 1), 128)
+    assertValueError(TInt.new(true, 1), -129)
+    assertValueError(TInt.new(false, 1), 256)
+    assertValueError(TInt.new(false, 1), -1)
   end
 
   def testFloat()
