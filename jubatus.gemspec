@@ -12,7 +12,7 @@ Gem::Specification.new do |gem|
   gem.has_rdoc    = false
   gem.license     = "MIT"
 
-  files = `git ls-files`.split("\n")
+  files = `git ls-files`.split("\n") + Dir.glob("lib/jubatus/**/*.rb")
   excludes = ["patch/*", "generate.sh"]
 
   gem.files       = files.reject { |f| excludes.any? { |e| File.fnmatch(e, f) } }
