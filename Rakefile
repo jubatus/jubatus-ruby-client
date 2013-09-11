@@ -14,6 +14,14 @@ task :test do |test|
   end
 end
 
+task :integration_test do |test|
+  Rake::TestTask.new(:integration_test) do |t|
+    t.libs << 'lib' << 'integration_test'
+    t.test_files = FileList['integration_test/**/*.rb']
+    t.verbose = true
+  end
+end
+
 # for Ruby 1.8
 task :coverage do |coverage|
   system("rcov -o test/coverage -I lib:test  --exclude . --include-file lib/jubatus --aggregate coverage.info test/**/*.rb")
