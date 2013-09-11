@@ -6,18 +6,37 @@ class Datum
   include Jubatus::Common
   TYPE = TTuple.new(TList.new(TTuple.new(TString.new, TString.new)),
                     TList.new(TTuple.new(TString.new, TFloat.new)))
-  def initialize(string_values, num_values)
-     @string_values = string_values 
-     @num_values = num_values 
+
+  def initialize(values = {})
+    @string_values = []
+    @num_values = []
+    values.each { |k, v|
+      raise ValueError if not String === k
+      if String === v
+        @string_values << [k, v]
+      elsif Integer === v
+        @num_values << [k, v.to_f]
+      elsif Float === v
+        @num_values << [k, v]
+      else
+        raise ValueError
+      end
+    }
   end
+
   def to_msgpack(out = '')
     t = [@string_values, @num_values]
     return TYPE.to_msgpack(t)
   end
+
   def Datum.from_msgpack(m)
     val = TYPE.from_msgpack(m)
-    Datum.new(*val)
+    d = Datum.new
+    d.string_values = m[0]
+    d.num_values = m[1]
+    return d
   end
+
   def to_s
     gen = Jubatus::Common::MessageStringGenerator.new
     gen.open("datum")

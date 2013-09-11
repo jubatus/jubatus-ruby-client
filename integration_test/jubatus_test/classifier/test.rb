@@ -50,17 +50,13 @@ class ClassifierTest < Test::Unit::TestCase
   end
 
   def test_train
-    string_values = [["key1", "val1"], ["key2", "val2"]]
-    num_values = [["key1", 1.0], ["key2", 2.0]]
-    d = Jubatus::Common::Datum.new(string_values, num_values)
+    d = Jubatus::Common::Datum.new({"skey1" => "val1", "skey2" => "val2", "nkey1" => 1.0, "nkey2" => 2.0})
     data = [["label", d]]
     assert_equal(@cli.train(data), 1)
   end
 
   def test_classify
-    string_values = [["key1", "val1"], ["key2", "val2"]]
-    num_values = [["key1", 1.0], ["key2", 2.0]]
-    d = Jubatus::Common::Datum.new(string_values, num_values)
+    d = Jubatus::Common::Datum.new({"skey1" => "val1", "skey2" => "val2", "nkey1" => 1.0, "nkey2" => 2.0})
     data = [d]
     result = @cli.classify(data)
   end
