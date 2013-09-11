@@ -31,7 +31,7 @@ class AnomalyTest < Test::Unit::TestCase
        "reverse_nearest_neighbor_num" => 30,
        "method" => "euclid_lsh",
        "parameter" => {
-         "lsh_num" => 8,
+         "hash_num" => 8,
          "table_num" => 16,
          "probe_num" => 64,
          "bin_width" => 10.0,
