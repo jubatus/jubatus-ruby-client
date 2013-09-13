@@ -38,7 +38,7 @@ class GraphTest < Test::Unit::TestCase
   def test_node_info
     edge_query = [["a", "b"], ["c", "d"], ["e", "f"]]
     node_query = [["0", "1"], ["2", "3"]]
-    p = Jubatus::Graph::Preset_query.new(edge_query, node_query)
+    p = Jubatus::Graph::PresetQuery.new(edge_query, node_query)
     in_edges = [0, 0]
     out_edges = [0, 0]
     Jubatus::Graph::Node.new(p, in_edges, out_edges)
