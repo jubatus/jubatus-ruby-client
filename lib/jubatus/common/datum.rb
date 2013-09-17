@@ -11,7 +11,7 @@ class Datum
     @string_values = []
     @num_values = []
     values.each { |k, v|
-      raise ValueError if not String === k
+      raise TypeError if not String === k
       if String === v
         @string_values << [k, v]
       elsif Integer === v
@@ -19,7 +19,7 @@ class Datum
       elsif Float === v
         @num_values << [k, v]
       else
-        raise ValueError
+        raise TypeError
       end
     }
   end
