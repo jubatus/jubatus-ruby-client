@@ -53,5 +53,33 @@ class Client
   end
 end
 
+class ClientBase
+  def initialize(host, port, name)
+    @cli = MessagePack::RPC::Client.new(host, port)
+    @jubatus_client = Jubatus::Common::Client.new(@cli, name)
+  end
+
+  def get_client
+    @cli
+  end
+
+  def get_config
+    @jubatus_client.call("get_config", [], TString.new, [])
+  end
+
+  def save(id)
+    @jubatus_client.call("save", [id], TBool.new, [TString.new])
+  end
+
+  def load(id)
+    @jubatus_client.call("load", [id], TBool.new, [TString.new])
+  end
+
+  def get_status
+    @jubatus_client.call("get_status", [], TMap.new(TString.new, TMap.new(
+        TString.new, TString.new)), [])
+  end
+end
+
 end
 end
