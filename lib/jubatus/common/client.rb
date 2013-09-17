@@ -54,8 +54,9 @@ class Client
 end
 
 class ClientBase
-  def initialize(host, port, name)
+  def initialize(host, port, name, timeout_sec)
     @cli = MessagePack::RPC::Client.new(host, port)
+    @cli.timeout = timeout_sec
     @jubatus_client = Jubatus::Common::Client.new(@cli, name)
   end
 
