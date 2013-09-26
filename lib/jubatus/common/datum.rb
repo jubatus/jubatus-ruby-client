@@ -78,7 +78,7 @@ class Datum
     gen.close()
     return gen.to_s
   end
-  attr_accessor :string_values, :num_values, :binary_values
+  attr_reader :string_values, :num_values, :binary_values
 end
 
 end
