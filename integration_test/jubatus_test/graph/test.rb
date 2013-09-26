@@ -6,7 +6,6 @@ require 'jubatus_test/test_util'
 require 'json'
 
 require 'jubatus/graph/client'
-require 'jubatus/graph/types'
 
 class GraphTest < Test::Unit::TestCase
   HOST = "127.0.0.1"

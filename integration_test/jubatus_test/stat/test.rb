@@ -5,7 +5,6 @@ require 'test/unit'
 require 'json'
 
 require 'jubatus/stat/client'
-require 'jubatus/stat/types'
 require 'jubatus_test/test_util'
 
 class StatTest < Test::Unit::TestCase

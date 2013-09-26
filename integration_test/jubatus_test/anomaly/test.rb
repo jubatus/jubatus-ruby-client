@@ -5,7 +5,6 @@ require 'test/unit'
 require 'json'
 
 require 'jubatus/anomaly/client'
-require 'jubatus/anomaly/types'
 require 'jubatus_test/test_util'
 
 class AnomalyTest < Test::Unit::TestCase
@@ -68,7 +67,7 @@ class AnomalyTest < Test::Unit::TestCase
   def test_update
     d = Jubatus::Common::Datum.new
     res = @cli.add(d)
-    d = Jubatus::Common::Datum.new({'val' => 3.1})
+    d = Jubatus::Common::Datum.new('val' => 3.1)
     score = @cli.update(res.id, d)
   end
 
@@ -77,9 +76,9 @@ class AnomalyTest < Test::Unit::TestCase
   end
 
   def test_calc_score
-    d = Jubatus::Common::Datum.new({'val' => 1.1})
+    d = Jubatus::Common::Datum.new('val' => 1.1)
     res = @cli.add(d)
-    d = Jubatus::Common::Datum.new({'val' => 3.1})
+    d = Jubatus::Common::Datum.new('val' => 3.1)
     score = @cli.calc_score(d)
   end
 

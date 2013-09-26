@@ -5,7 +5,6 @@ require 'test/unit'
 require 'json'
 
 require 'jubatus/regression/client'
-require 'jubatus/regression/types'
 require 'jubatus_test/test_util'
 
 class RegressionTest < Test::Unit::TestCase
@@ -51,13 +50,13 @@ class RegressionTest < Test::Unit::TestCase
   end
 
   def test_train
-    d = Jubatus::Common::Datum.new({"skey1" => "val1", "skey2" => "val2", "nkey1" => 1.0, "nkey2" => 2.0})
+    d = Jubatus::Common::Datum.new("skey1" => "val1", "skey2" => "val2", "nkey1" => 1.0, "nkey2" => 2.0)
     data = [[1.0, d]]
     assert_equal(@cli.train(data), 1)
   end
 
   def test_estimate
-    d = Jubatus::Common::Datum.new({"skey1" => "val1", "skey2" => "val2", "nkey1" => 1.0, "nkey2" => 2.0})
+    d = Jubatus::Common::Datum.new("skey1" => "val1", "skey2" => "val2", "nkey1" => 1.0, "nkey2" => 2.0)
     data = [d]
     result = @cli.estimate(data)
   end
