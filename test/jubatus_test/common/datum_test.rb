@@ -28,13 +28,13 @@ class DatumTest < Test::Unit::TestCase
 
   def test_invalid_key
     assert_raise(TypeError) {
-      Datum.new({1 => ""})
+      Datum.new(1 => "")
     }
   end
 
   def test_invalid_value
-    assert_raise(TypeError) { Datum.new({"" => nil}) }
-    assert_raise(TypeError) { Datum.new({"" => []}) }
+    assert_raise(TypeError) { Datum.new("" => nil) }
+    assert_raise(TypeError) { Datum.new("" => []) }
   end
 
 end
