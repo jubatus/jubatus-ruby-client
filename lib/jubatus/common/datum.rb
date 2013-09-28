@@ -63,9 +63,9 @@ class Datum
   def Datum.from_msgpack(m)
     val = TYPE.from_msgpack(m)
     d = Datum.new
-    d.string_values = m[0]
-    d.num_values = m[1]
-    d.binary_values = m[2]
+    d.string_values.concat(m[0])
+    d.num_values.concat(m[1])
+    d.binary_values.concat(m[2])
     return d
   end
 
