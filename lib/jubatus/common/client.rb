@@ -1,9 +1,9 @@
 module Jubatus
 module Common
 
-class RemoteError < Exception; end
-class UnknownMethod < Exception; end
-class TypeMismatch < Exception; end
+class InterfaceMismatch < Exception; end
+class UnknownMethod < InterfaceMismatch; end
+class TypeMismatch < InterfaceMismatch; end
 
 class Client
   def initialize(client, name)
@@ -36,7 +36,7 @@ class Client
     elsif error == 2
       raise TypeMismatch
     else
-      raise RemoteError, error.to_s
+      raise MessagePack.RPC.RPCError.create(error, result)
     end
   end
 end
