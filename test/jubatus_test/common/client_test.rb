@@ -50,6 +50,12 @@ class AlwaysRaiseTypeMismatch < DummyClient
   end
 end
 
+class AlwaysRaiseRemoteError < DummyClient
+  def send_request(method, args)
+    DummyFuture.new(nil, "error")
+  end
+end
+
 class Echo < DummyClient
   def send_request(method, args)
     DummyFuture.new(method, nil)
@@ -77,6 +83,13 @@ class ClientTest < Test::Unit::TestCase
   def test_type_mismatch
     c = Jubatus::Common::Client.new(AlwaysRaiseTypeMismatch.new, "name")
     assert_raise(Jubatus::Common::TypeMismatch) {
+      c.call("test", [], nil, [])
+    }
+  end
+
+  def test_remote_error
+    c = Jubatus::Common::Client.new(AlwaysRaiseRemoteError.new, "name")
+    assert_raise(MessagePack::RPC::RemoteError) {
       c.call("test", [], nil, [])
     }
   end
