@@ -36,7 +36,7 @@ class Client
     elsif error == 2
       raise TypeMismatch
     else
-      raise MessagePack.RPC.RPCError.create(error, result)
+      raise MessagePack::RPC::RPCError.create(error, result)
     end
   end
 end
