@@ -48,6 +48,15 @@ class ClientBase
     @jubatus_client = Jubatus::Common::Client.new(@cli, name)
   end
 
+  def self.connect(host, port, name, timeout_sec, &block)
+    begin
+      client = self.new(host, port, name, timeout_sec)
+      block.call(client)
+    ensure
+      client.get_client.close
+    end
+  end
+
   def get_client
     @cli
   end
