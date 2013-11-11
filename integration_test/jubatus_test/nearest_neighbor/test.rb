@@ -52,7 +52,7 @@ class NearestNeighborTest < Test::Unit::TestCase
     @cli.clear
     d = Jubatus::Common::Datum.new("skey1" => "val1", "skey2" => "val2", "nkey1" => 1.0, "nkey2" => 2.0)
     @cli.set_row("neighbor_row", d)
-    d1 = @cli.neighbor_row_from_id("complete_row", 10)
+    d1 = @cli.neighbor_row_from_id("neighbor_row", 10)
     d2 = @cli.neighbor_row_from_data(d, 10)
   end
 
