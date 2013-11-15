@@ -25,8 +25,10 @@ for DIR in "${CLIENT_DIR}/lib/jubatus/"*; do
 done
 pushd "${JUBATUS_DIR}/jubatus/server/server"
 for IDL in *.idl; do
+  IDL_HASH=`git log -1 --format=%H -- ${IDL}`
+  IDL_VER=`git describe ${IDL_HASH}`
   NAMESPACE="$(capitalize $(basename "${IDL}" ".idl"))"
-  jenerator -l ruby "${IDL}" -n "Jubatus::${NAMESPACE}" -o "${CLIENT_DIR}/lib/jubatus"
+  jenerator -l ruby "${IDL}" -n "Jubatus::${NAMESPACE}" -o "${CLIENT_DIR}/lib/jubatus" --idl-version $IDL_VER
 done
 popd
 
