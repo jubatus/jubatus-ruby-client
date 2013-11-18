@@ -9,35 +9,35 @@ require 'jubatus_test/test_util'
 
 class ClusteringTest < Test::Unit::TestCase
   HOST = "127.0.0.1"
-  PORT = 23007
+  PORT = 23008
   TIMEOUT = 10
 
   def setup
     @config = {
-            "method" => "kmeans",
+      "method" => "kmeans",
       "converter" => {
         "string_filter_types" => {},
-                "string_filter_rules" => [],
+        "string_filter_rules" => [],
         "num_filter_types" => {},
-                "num_filter_rules" => [],
+        "num_filter_rules" => [],
         "string_types" => {},
-                "string_rules" => [
-                                   { "key" => "*", "type" => "str", "sample_weight" => "bin", "global_weight" => "bin" }
-                    ],
+        "string_rules" => [
+                           { "key" => "*", "type" => "str", "sample_weight" => "bin", "global_weight" => "bin" }
+                          ],
         "num_types" => {},
-                "num_rules" => [
-                                { "key" => "*", "type" => "num" }
-                    ]
+        "num_rules" => [
+                        { "key" => "*", "type" => "num" }
+                       ]
       },
       "parameter" => {
-                "k" => 10,
-                "compressor_method" => "simple",
-                "backet_size" => 1,
-                "compressed_backet_size" => 1,
-                "bicriteria_base_size" => 10,
-                "backet_length" => 1,
-                "forgetting_factor" => 0,
-                "forgetting_threshold" => 0.5
+        "k" => 10,
+        "compressor_method" => "simple",
+        "bucket_size" => 1,
+        "compressed_bucket_size" => 1,
+        "bicriteria_base_size" => 10,
+        "bucket_length" => 1,
+        "forgetting_factor" => 0,
+        "forgetting_threshold" => 0.5
       }
     }
 
