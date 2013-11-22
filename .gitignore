@@ -1,4 +1,6 @@
-lib/
+lib/jubatus/*
+!lib/jubatus/common
+!lib/jubatus/common.rb
 *.gem
 *.rbc
 .bundle
@@ -14,6 +16,7 @@ test/version_tmp
 tmp
 *.model.js
 *.json
+*~
 
 # YARD artifacts
 .yardoc
