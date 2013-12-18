@@ -21,6 +21,24 @@ class DatumTest < Test::Unit::TestCase
                  d.binary_values)
   end
 
+  def test_add_string
+    d = Datum.new
+    d.add_string("key", "value")
+    assert_equal([["key", "value"]], d.string_values)
+  end
+
+  def test_add_number
+    d = Datum.new
+    d.add_number("key", 20.0)
+    assert_equal([["key", 20.0]], d.num_values)
+  end
+
+  def test_add_binary
+    d = Datum.new
+    d.add_binary("key", "0101")
+    assert_equal([["key", "0101"]], d.binary_values)
+  end
+
   def test_empty
     assert_equal([[], [], []].to_msgpack,
                  Datum.new.to_msgpack.to_msgpack)
