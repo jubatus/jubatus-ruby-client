@@ -29,7 +29,7 @@ class Datum
   def add_string(key, value)
     raise TypeError unless String === key
     if String === value
-      @string_values << [k, v]
+      @string_values << [key, value]
     else
       raise TypeError
     end
@@ -37,10 +37,10 @@ class Datum
 
   def add_number(key, value)
     raise TypeError unless String === key
-    if Integer === v
-      @num_values << [k, v.to_f]
-    elsif Float === v
-      @num_values << [k, v]
+    if Integer === value
+      @num_values << [key, value.to_f]
+    elsif Float === value
+      @num_values << [key, value]
     else
       raise TypeError
     end
@@ -49,7 +49,7 @@ class Datum
   def add_binary(key, value)
     raise TypeError unless String === key
     if String === value
-      @binary_values << [k, v]
+      @binary_values << [key, value]
     else
       raise TypeError
     end
