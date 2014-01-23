@@ -11,11 +11,11 @@ class Client
     @name = name
   end
 
-  def call(method, args, ret_type, args_type, use_name=true)
+  def call(method, args, ret_type, args_type)
     if args.size != args_type.size
       raise "number of arguemnts for \"%s\" must to be %d, but %d arguments are given" % [method, args_type.size, args.size]
     end
-    values = use_name ? [@name] : []
+    values = [@name]
     args.zip(args_type).each do |v, t|
       values << t.to_msgpack(v)
     end
@@ -80,7 +80,7 @@ class ClientBase
 
   def get_proxy_status
     @jubatus_client.call("get_proxy_status", [], TMap.new(TString.new, TMap.new(
-        TString.new, TString.new)), [], false)
+        TString.new, TString.new)), [])
   end
 end
 
