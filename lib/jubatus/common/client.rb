@@ -77,6 +77,11 @@ class ClientBase
     @jubatus_client.call("get_status", [], TMap.new(TString.new, TMap.new(
         TString.new, TString.new)), [])
   end
+
+  def get_proxy_status
+    @jubatus_client.call("get_proxy_status", [], TMap.new(TString.new, TMap.new(
+        TString.new, TString.new)), [])
+  end
 end
 
 end
