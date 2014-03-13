@@ -78,6 +78,10 @@ class ClientBase
         TString.new, TString.new)), [])
   end
 
+  def do_mix
+    @jubatus_client.call("do_mix", [], TBool.new, [])
+  end
+
   def get_proxy_status
     @jubatus_client.call("get_proxy_status", [], TMap.new(TString.new, TMap.new(
         TString.new, TString.new)), [])
