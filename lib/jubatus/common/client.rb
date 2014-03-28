@@ -6,6 +6,8 @@ class UnknownMethod < InterfaceMismatch; end
 class TypeMismatch < InterfaceMismatch; end
 
 class Client
+  attr_accessor :name
+
   def initialize(client, name)
     @client = client
     @name = name
@@ -59,6 +61,14 @@ class ClientBase
 
   def get_client
     @cli
+  end
+
+  def get_name
+    @jubatus_client.name
+  end
+
+  def set_name(name)
+    @jubatus_client.name = name
   end
 
   def get_config
