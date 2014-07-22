@@ -8,7 +8,7 @@ module Common
 class DatumTest < Test::Unit::TestCase
   def test_pack
     assert_equal([[["name", "Taro"]], [["age", 20.0]], []].to_msgpack,
-                 Datum.new({"name" => "Taro", "age" => 20}).to_msgpack.to_msgpack)
+                 Datum.new({name: "Taro", "age" => 20}).to_msgpack.to_msgpack)
   end
 
   def test_unpack
