@@ -7,7 +7,7 @@ Gem::Specification.new do |gem|
   gem.homepage    = "http://jubat.us"
   gem.summary     = "Jubatus Ruby client"
   gem.version     = File.read("VERSION").strip
-  gem.authors     = ["PFI & NTT"]
+  gem.authors     = ["PFN & NTT"]
   gem.email       = "jubatus@googlegroups.com"
   gem.has_rdoc    = false
   gem.license     = "MIT"
