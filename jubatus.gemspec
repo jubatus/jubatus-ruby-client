@@ -7,7 +7,7 @@ Gem::Specification.new do |gem|
   gem.homepage    = "http://jubat.us"
   gem.summary     = "Jubatus Ruby client"
   gem.version     = File.read("VERSION").strip
-  gem.authors     = ["PFI & NTT"]
+  gem.authors     = ["PFN & NTT"]
   gem.email       = "jubatus@googlegroups.com"
   gem.has_rdoc    = false
   gem.license     = "MIT"
@@ -22,4 +22,6 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency "msgpack-rpc", "~> 0.5.1"
   gem.add_development_dependency "rake", ">= 0.9.2"
+  gem.add_development_dependency "simplecov"
+  gem.add_development_dependency "ci_reporter"
 end

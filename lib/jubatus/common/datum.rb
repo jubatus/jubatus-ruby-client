@@ -12,8 +12,9 @@ class Datum
     @string_values = []
     @num_values = []
     @binary_values = []
-    values.each { |k, v|
-      raise TypeError unless String === k
+    values.each { |key, v|
+      raise TypeError unless String === key || Symbol === key
+      k = key.to_s
       if String === v
         @string_values << [k, v]
       elsif Integer === v
