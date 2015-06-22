@@ -76,7 +76,8 @@ class ClientBase
   end
 
   def save(id)
-    @jubatus_client.call("save", [id], TBool.new, [TString.new])
+    @jubatus_client.call("save", [id], TMap.new(TString.new, TString.new),
+        [TString.new])
   end
 
   def load(id)
