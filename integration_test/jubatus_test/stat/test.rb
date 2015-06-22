@@ -91,7 +91,7 @@ class StatTest < Test::Unit::TestCase
   end
 
   def test_save
-    assert_equal(@cli.save("stat.save_test.model"), true)
+    assert_equal(@cli.save("stat.save_test.model").size, 1)
   end
 
   def test_load

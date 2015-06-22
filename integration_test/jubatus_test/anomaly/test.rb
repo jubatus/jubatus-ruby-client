@@ -92,7 +92,7 @@ class AnomalyTest < Test::Unit::TestCase
   end
 
   def test_save
-    assert_equal(true, @cli.save("anomaly.save_test.model"))
+    assert_equal(@cli.save("anomaly.save_test.model").size, 1)
   end
 
   def test_load
