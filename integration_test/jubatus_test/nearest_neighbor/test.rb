@@ -69,7 +69,7 @@ class NearestNeighborTest < Test::Unit::TestCase
   end
 
   def test_save
-    assert_equal(@cli.save("nearest_neighbor.save_test.model"), true)
+    assert_equal(@cli.save("nearest_neighbor.save_test.model").size, 1)
   end
 
   def test_load
