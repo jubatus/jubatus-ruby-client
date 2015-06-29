@@ -60,7 +60,7 @@ class ClusteringTest < Test::Unit::TestCase
   end
 
   def test_save
-    assert_equal(true, @cli.save("clustering.save_test.model"))
+    assert_equal(@cli.save("clustering.save_test.model").size, 1)
   end
 
   def test_load
@@ -123,9 +123,11 @@ class ClusteringTest < Test::Unit::TestCase
   end
 
   def test_nearest_members
-    d = Jubatus::Common::Datum.new({"nkey1" => 1.0, "nkey2" => 1.0})
+    for i in 0..99
+      d = Jubatus::Common::Datum.new({"nkey1" => i, "nkey2" => -i})
+      @cli.push([d])
+    end
     q = Jubatus::Common::Datum.new({"nkey1" => 2.0, "nkey2" => 1.0})
-    @cli.push([d])
     res = @cli.get_nearest_members(q)
     assert_instance_of(Jubatus::Clustering::WeightedDatum, res[0])
   end
