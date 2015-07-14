@@ -112,16 +112,6 @@ class ClusteringTest < Test::Unit::TestCase
     assert_instance_of(Jubatus::Common::Datum, res)
   end
 
-  def test_nearest_center
-    for i in 0..99
-      d = Jubatus::Common::Datum.new({"nkey1" => i, "nkey2" => -i})
-      @cli.push([d])
-    end
-    q = Jubatus::Common::Datum.new({"nkey1" => 2.0, "nkey2" => 1.0})
-    res = @cli.get_nearest_center(q)
-    assert_instance_of(Jubatus::Common::Datum, res)
-  end
-
   def test_nearest_members
     for i in 0..99
       d = Jubatus::Common::Datum.new({"nkey1" => i, "nkey2" => -i})
