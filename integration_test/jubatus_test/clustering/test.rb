@@ -37,7 +37,8 @@ class ClusteringTest < Test::Unit::TestCase
         "bicriteria_base_size" => 1,
         "bucket_length" => 2,
         "forgetting_factor" => 0,
-        "forgetting_threshold" => 0.5
+        "forgetting_threshold" => 0.5,
+        "seed" => 0,
       }
     }
 
@@ -100,16 +101,6 @@ class ClusteringTest < Test::Unit::TestCase
     res = @cli.get_k_center()
     assert_equal(10, res.length)
     assert_instance_of(Jubatus::Common::Datum, res[0])
-  end
-
-  def test_nearest_center
-    for i in 0..99
-      d = Jubatus::Common::Datum.new({"nkey1" => i, "nkey2" => -i})
-      @cli.push([d])
-    end
-    q = Jubatus::Common::Datum.new({"nkey1" => 2.0, "nkey2" => 1.0})
-    res = @cli.get_nearest_center(q)
-    assert_instance_of(Jubatus::Common::Datum, res)
   end
 
   def test_nearest_center
