@@ -85,11 +85,12 @@ class ClusteringTest < Test::Unit::TestCase
   end
 
   def test_get_core_members
-    d = Jubatus::Common::Datum.new
-    @cli.push([d])
+    for i in 0..99
+      d = Jubatus::Common::Datum.new({"nkey1" => i, "nkey2" => -i})
+      @cli.push([d])
+    end
     res = @cli.get_core_members()
     assert_equal(10, res.length)
-    assert_equal(1, res[0].length)
     assert_instance_of(Jubatus::Clustering::WeightedDatum, res[0][0])
   end
 
