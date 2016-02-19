@@ -8,7 +8,7 @@ Gem::Specification.new do |gem|
   gem.summary     = "Jubatus Ruby client"
   gem.version     = File.read("VERSION").strip
   gem.authors     = ["PFN & NTT"]
-  gem.email       = "jubatus@googlegroups.com"
+  gem.email       = "jubatus-team@googlegroups.com"
   gem.has_rdoc    = false
   gem.license     = "MIT"
 
