@@ -60,6 +60,20 @@ class ClassifierTest < Test::Unit::TestCase
     result = @cli.classify(data)
   end
 
+  def test_set_label
+    assert_equal(@cli.set_label("label"), true)
+  end
+
+  def test_get_label
+    @cli.set_label("label")
+    assert_equal(@cli.get_labels(), {"label" => 0})
+  end
+
+  def test_delete_label
+    @cli.set_label("label")
+    assert_equal(@cli.delete_label("label"), true)
+  end
+
   def test_save
     assert_equal(@cli.save("classifier.save_test.model").size, 1)
   end
