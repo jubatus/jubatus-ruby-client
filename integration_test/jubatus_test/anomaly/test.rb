@@ -35,7 +35,6 @@ class AnomalyTest < Test::Unit::TestCase
          "probe_num" => 64,
          "bin_width" => 10.0,
          "seed" => 1091,
-         "retain_projection" => false
        }
      }
     }
