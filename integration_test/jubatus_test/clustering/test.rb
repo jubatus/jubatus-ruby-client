@@ -31,14 +31,11 @@ class ClusteringTest < Test::Unit::TestCase
       },
       "parameter" => {
         "k" => 10,
-        "compressor_method" => "simple",
-        "bucket_size" => 3,
-        "compressed_bucket_size" => 2,
-        "bicriteria_base_size" => 1,
-        "bucket_length" => 2,
-        "forgetting_factor" => 0,
-        "forgetting_threshold" => 0.5,
-        "seed" => 0,
+        "seed" => 0
+      },
+      "compressor_method" => "simple",
+      "compressor_parameter" => {
+        "bucket_size" => 3
       }
     }
 
@@ -75,7 +72,7 @@ class ClusteringTest < Test::Unit::TestCase
   end
 
   def test_push
-    d = Jubatus::Common::Datum.new
+    d = Jubatus::Clustering::IndexedPoint.new("test", Jubatus::Common::Datum.new)
     res = @cli.push([d])
   end
 
@@ -87,17 +84,27 @@ class ClusteringTest < Test::Unit::TestCase
   def test_get_core_members
     for i in 0..99
       d = Jubatus::Common::Datum.new({"nkey1" => i, "nkey2" => -i})
-      @cli.push([d])
+      @cli.push([Jubatus::Clustering::IndexedPoint.new(i.to_s, d)])
     end
     res = @cli.get_core_members()
     assert_equal(10, res.length)
     assert_instance_of(Jubatus::Clustering::WeightedDatum, res[0][0])
   end
 
+  def test_get_core_members_light
+    for i in 0..99
+      d = Jubatus::Common::Datum.new({"nkey1" => i, "nkey2" => -i})
+      @cli.push([Jubatus::Clustering::IndexedPoint.new(i.to_s, d)])
+    end
+    res = @cli.get_core_members_light()
+    assert_equal(10, res.length)
+    assert_instance_of(Jubatus::Clustering::WeightedIndex, res[0][0])
+  end
+
   def test_k_center
     for i in 0..99
       d = Jubatus::Common::Datum.new({"nkey1" => i, "nkey2" => -i})
-      @cli.push([d])
+      @cli.push([Jubatus::Clustering::IndexedPoint.new(i.to_s, d)])
     end
     res = @cli.get_k_center()
     assert_equal(10, res.length)
@@ -107,7 +114,7 @@ class ClusteringTest < Test::Unit::TestCase
   def test_nearest_center
     for i in 0..99
       d = Jubatus::Common::Datum.new({"nkey1" => i, "nkey2" => -i})
-      @cli.push([d])
+      @cli.push([Jubatus::Clustering::IndexedPoint.new(i.to_s, d)])
     end
     q = Jubatus::Common::Datum.new({"nkey1" => 2.0, "nkey2" => 1.0})
     res = @cli.get_nearest_center(q)
@@ -117,7 +124,7 @@ class ClusteringTest < Test::Unit::TestCase
   def test_nearest_members
     for i in 0..99
       d = Jubatus::Common::Datum.new({"nkey1" => i, "nkey2" => -i})
-      @cli.push([d])
+      @cli.push([Jubatus::Clustering::IndexedPoint.new(i.to_s, d)])
     end
     q = Jubatus::Common::Datum.new({"nkey1" => 2.0, "nkey2" => 1.0})
     res = @cli.get_nearest_members(q)
