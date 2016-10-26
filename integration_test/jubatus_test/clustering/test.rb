@@ -131,4 +131,14 @@ class ClusteringTest < Test::Unit::TestCase
     assert_instance_of(Jubatus::Clustering::WeightedDatum, res[0])
   end
 
+  def test_nearest_members
+    for i in 0..99
+      d = Jubatus::Common::Datum.new({"nkey1" => i, "nkey2" => -i})
+      @cli.push([Jubatus::Clustering::IndexedPoint.new(i.to_s, d)])
+    end
+    q = Jubatus::Common::Datum.new({"nkey1" => 2.0, "nkey2" => 1.0})
+    res = @cli.get_nearest_members_light(q)
+    assert_instance_of(Jubatus::Clustering::WeightedIndex, res[0])
+  end
+
 end
