@@ -7,10 +7,8 @@ CLIENT_DIR="$(cd $(dirname ${0}) && echo ${PWD})"
 [ $# -eq 0 ] || JUBATUS_BRANCH="${1}"
 
 rm -rf "${JUBATUS_DIR}"
-git clone https://github.com/jubatus/jubatus.git "${JUBATUS_DIR}"
-pushd "${JUBATUS_DIR}"
-git checkout "${JUBATUS_BRANCH}"
-popd
+curl -L "https://github.com/jubatus/jubatus/archive/${JUBATUS_BRANCH}.tar.gz" | tar xz
+mv "jubatus-${JUBATUS_BRANCH}" "${JUBATUS_DIR}"
 
 # Ruby
 
