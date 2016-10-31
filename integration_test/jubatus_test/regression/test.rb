@@ -14,7 +14,7 @@ class RegressionTest < Test::Unit::TestCase
 
   def setup
     @config = {
-        "method" => "PA",
+        "method" => "PA1",
         "converter" => {
             "string_filter_types" => {},
             "string_filter_rules" => [],
