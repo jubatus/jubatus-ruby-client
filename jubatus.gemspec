@@ -20,8 +20,9 @@ Gem::Specification.new do |gem|
   gem.executables = gem.files.grep(%r{^bin/}).map { |f| File.basename(f) }
   gem.require_paths = ['lib']
 
-  gem.add_dependency "msgpack-rpc", "~> 0.5.1"
+  gem.add_dependency "msgpack-rpc", ">= 0.5.1"
   gem.add_development_dependency "rake", ">= 0.9.2"
   gem.add_development_dependency "simplecov"
   gem.add_development_dependency "ci_reporter"
+  gem.add_development_dependency "test-unit", "> 3"
 end
