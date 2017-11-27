@@ -24,5 +24,6 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "rake", ">= 0.9.2"
   gem.add_development_dependency "simplecov"
   gem.add_development_dependency "ci_reporter"
+  gem.add_development_dependency "ci_reporter_test_unit"
   gem.add_development_dependency "test-unit", "> 3"
 end
